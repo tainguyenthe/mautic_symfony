@@ -1,0 +1,42 @@
+version: '2'
+services:
+  # The Web Server
+  mautic:
+    image: mautic/mautic:latest
+    links:
+      - mauticdb:mysql
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html
+    environment:
+      - MAUTIC_DB_HOST=127.0.0.1
+      - MAUTIC_DB_USER=root
+      - MAUTIC_DB_PASSWORD=password
+      - MAUTIC_DB_NAME=mautic
+
+  # The Database
+  mauticdb:
+    image: mysql:5.6
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=mautic
+      - MYSQL_ROOT_PASSWORD=password
+    
+  # The Adminer tool
+  devtools:
+    image: rualatngua/devtools:2.0
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASS=password
+      - DB_NAME=mautic
+    ports:
+      - 8081:80
+    links:
+      - mauticdb:mysql
+    depends_on:
+      - mauticdb
+volumes:
+  dbdata:
