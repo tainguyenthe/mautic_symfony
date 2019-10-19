@@ -1,3 +1,10 @@
 vendor/
 app/cache/
 app/logs/
+node_modules/
+tests/
+build/
+bin/
+composer.lock
+package-lock.json
+*/*.lock
